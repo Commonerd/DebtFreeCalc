@@ -1,355 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DebtFreeCalc: Debt Repayment Calculator | Pay Off Debt & Achieve Financial Freedom</title>
-    <meta name="description" content="Use the free DebtFreeCalc to pay off debt faster, save interest, and achieve financial freedom with Snowball and Avalanche strategies.">
-    <meta name="keywords" content="debt calculator, debt repayment, debt snowball, debt avalanche, financial freedom, personal finance, debt management tool, save interest, money management">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      DebtFreeCalculate: Debt Repayment Calculator | Pay Off Debt & Achieve
+      Financial Freedom
+    </title>
+    <meta
+      name="description"
+      content="Use the free DebtFreeCalculate to pay off debt faster, save interest, and achieve financial freedom with Snowball and Avalanche strategies."
+    />
+    <meta
+      name="keywords"
+      content="debt calculator, debt repayment, debt snowball, debt avalanche, financial freedom, personal finance, debt management tool, save interest, money management"
+    />
 
     <!-- Favicon SVG - Inline for simplicity -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='gradient-green' x1='0%' y1='0%' x2='100%' y2='100%'%3E%3Cstop offset='0%' style='stop-color:%2310B981;stop-opacity:1' /%3E%3Cstop offset='100%' style='stop-color:%2334D399;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23F9FAFB'/%3E%3Cpath fill='url(%23gradient-green)' d='M20 70 L35 55 L50 65 L65 40 L80 55 L80 70 Z'/%3E%3Cpath fill='%231F2937' d='M85 30 L80 55 L65 40 L50 65 L35 55 L15 85 L85 85 L85 30 Z' opacity='0.7'/%3E%3Cpolygon fill='%231F2937' points='80,55 65,40 68,37 83,52' opacity='0.5'/%3E%3Cpolygon fill='url(%23gradient-green)' points='50,65 65,40 68,37 53,62'/%3E%3Cpath fill='%2322C55E' d='M50 65 L35 55 L38,52 L53,62 Z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='gradient-green' x1='0%' y1='0%' x2='100%' y2='100%'%3E%3Cstop offset='0%' style='stop-color:%2310B981;stop-opacity:1' /%3E%3Cstop offset='100%' style='stop-color:%2334D399;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23F9FAFB'/%3E%3Cpath fill='url(%23gradient-green)' d='M20 70 L35 55 L50 65 L65 40 L80 55 L80 70 Z'/%3E%3Cpath fill='%231F2937' d='M85 30 L80 55 L65 40 L50 65 L35 55 L15 85 L85 85 L85 30 Z' opacity='0.7'/%3E%3Cpolygon fill='%231F2937' points='80,55 65,40 68,37 83,52' opacity='0.5'/%3E%3Cpolygon fill='url(%23gradient-green)' points='50,65 65,40 68,37 53,62'/%3E%3Cpath fill='%2322C55E' d='M50 65 L35 55 L38,52 L53,62 Z'/%3E%3C/svg%3E"
+      type="image/svg+xml"
+    />
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#10B981', // Emerald 600
-                        secondary: '#34D399', // Emerald 400
-                        accent: '#22C55E', // Green 500
-                        dark: '#1F2937', // Gray 800
-                        light: '#F9FAFB', // Gray 50
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#10B981", // Emerald 600
+              secondary: "#34D399", // Emerald 400
+              accent: "#22C55E", // Green 500
+              dark: "#1F2937", // Gray 800
+              light: "#F9FAFB", // Gray 50
+            },
+          },
+        },
+      };
     </script>
     <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* Light gray background */
-            color: #1F2937; /* Dark text */
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1024px;
-            margin: 0 auto;
-            padding: 1.5rem; /* px-6 py-4 */
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #1F2937;
-        }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #D1D5DB; /* Gray 300 */
-            border-radius: 0.5rem; /* rounded-lg */
-            background-color: white;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #10B981; /* Primary color */
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Ring effect */
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-        .btn-primary {
-            background-color: #10B981; /* Primary color */
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary:hover {
-            background-color: #059669; /* Darker primary */
-            transform: translateY(-1px);
-        }
-        .btn-secondary {
-            background-color: #6B7280; /* Gray 500 */
-            color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
-        }
-        .btn-secondary:hover {
-            background-color: #4B5563; /* Darker gray */
-            transform: translateY(-1px);
-        }
-        .card {
-            background-color: white;
-            border-radius: 1rem; /* rounded-xl */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-        }
-        .text-gradient {
-            background: linear-gradient(to right, #10B981, #34D399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f9fafb; /* Light gray background */
+        color: #1f2937; /* Dark text */
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 1.5rem; /* px-6 py-4 */
+      }
+      .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+      .input-group input,
+      .input-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db; /* Gray 300 */
+        border-radius: 0.5rem; /* rounded-lg */
+        background-color: white;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .input-group input:focus,
+      .input-group select:focus {
+        outline: none;
+        border-color: #10b981; /* Primary color */
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Ring effect */
+      }
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+      }
+      .btn-primary {
+        background-color: #10b981; /* Primary color */
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary:hover {
+        background-color: #059669; /* Darker primary */
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        background-color: #6b7280; /* Gray 500 */
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+      }
+      .btn-secondary:hover {
+        background-color: #4b5563; /* Darker gray */
+        transform: translateY(-1px);
+      }
+      .card {
+        background-color: white;
+        border-radius: 1rem; /* rounded-xl */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+      .text-gradient {
+        background: linear-gradient(to right, #10b981, #34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
     </style>
-</head>
-<body class="min-h-screen flex flex-col">
-
+  </head>
+  <body class="min-h-screen flex flex-col">
     <!-- Top Ad Banner Placeholder -->
-    <div id="ad-banner-top" class="w-full bg-light py-2 text-center text-xs text-gray-500 border-b border-gray-200">
-        <!-- Ad Placeholder: Ideal for a top banner ad (e.g., 728x90) -->
-        <p>Your Ad Here</p>
+    <div
+      id="ad-banner-top"
+      class="w-full bg-light py-2 text-center text-xs text-gray-500 border-b border-gray-200"
+    >
+      <!-- Ad Placeholder: Ideal for a top banner ad (e.g., 728x90) -->
+      <p>Your Ad Here</p>
     </div>
 
     <header class="bg-white shadow-sm py-4">
-        <div class="container flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gradient">DebtFreeCalc</h1>
-            <nav>
-                <!-- Future navigation links could go here -->
-                <a href="#" class="text-gray-600 hover:text-primary transition-colors text-sm md:text-base">About</a>
-                <a href="#" class="ml-4 text-gray-600 hover:text-primary transition-colors text-sm md:text-base">FAQ</a>
-            </nav>
-        </div>
+      <div class="container flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gradient">DebtFreeCalculate</h1>
+        <nav>
+          <!-- Future navigation links could go here -->
+          <a
+            href="#"
+            class="text-gray-600 hover:text-primary transition-colors text-sm md:text-base"
+            >About</a
+          >
+          <a
+            href="#"
+            class="ml-4 text-gray-600 hover:text-primary transition-colors text-sm md:text-base"
+            >FAQ</a
+          >
+        </nav>
+      </div>
     </header>
 
     <main class="flex-grow container py-8">
-        <section class="text-center mb-8">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-dark">
-                Calculate Your <span class="text-gradient">Debt Payoff</span> & Achieve Financial Freedom
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Pay off debt faster and save on interest with the most effective strategies.
-            </p>
-        </section>
+      <section class="text-center mb-8">
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-dark">
+          Calculate Your <span class="text-gradient">Debt Payoff</span> &
+          Achieve Financial Freedom
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Pay off debt faster and save on interest with the most effective
+          strategies.
+        </p>
+      </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <!-- Input Card -->
-            <div class="lg:col-span-1 card">
-                <h3 class="text-2xl font-semibold mb-6 text-dark">Enter Your Debt Information</h3>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <!-- Input Card -->
+        <div class="lg:col-span-1 card">
+          <h3 class="text-2xl font-semibold mb-6 text-dark">
+            Enter Your Debt Information
+          </h3>
 
-                <div id="debt-inputs-container">
-                    <!-- Debt input fields will be dynamically added here -->
-                    <div class="debt-input-group border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
-                        <h4 class="font-semibold text-gray-700 mb-3">Debt #1</h4>
-                        <div class="input-group mb-3">
-                            <label for="debtName-0">Debt Name</label>
-                            <input type="text" id="debtName-0" placeholder="e.g., Credit Card, Student Loan" value="Credit Card A">
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <div class="input-group">
-                                <label for="balance-0">Current Balance ($)</label>
-                                <input type="number" id="balance-0" value="5000" min="0" step="100">
-                            </div>
-                            <div class="input-group">
-                                <label for="interestRate-0">Annual Interest Rate (%)</label>
-                                <input type="number" id="interestRate-0" value="18" min="0" max="100" step="0.1">
-                            </div>
-                            <div class="input-group">
-                                <label for="minPayment-0">Minimum Monthly Payment ($)</label>
-                                <input type="number" id="minPayment-0" value="100" min="0" step="10">
-                            </div>
-                        </div>
-                        <button class="remove-debt-btn text-red-500 hover:text-red-700 text-sm mt-3" style="display: none;">Remove Debt</button>
-                    </div>
+          <div id="debt-inputs-container">
+            <!-- Debt input fields will be dynamically added here -->
+            <div
+              class="debt-input-group border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50"
+            >
+              <h4 class="font-semibold text-gray-700 mb-3">Debt #1</h4>
+              <div class="input-group mb-3">
+                <label for="debtName-0">Debt Name</label>
+                <input
+                  type="text"
+                  id="debtName-0"
+                  placeholder="e.g., Credit Card, Student Loan"
+                  value="Credit Card A"
+                />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="input-group">
+                  <label for="balance-0">Current Balance ($)</label>
+                  <input
+                    type="number"
+                    id="balance-0"
+                    value="5000"
+                    min="0"
+                    step="100"
+                  />
                 </div>
-
-                <button id="addDebtBtn" class="btn btn-secondary w-full mb-6">
-                    <span class="mr-2">+</span> Add Another Debt
-                </button>
-
-                <div class="input-group mb-6">
-                    <label for="extraPayment">Extra Monthly Payment ($)</label>
-                    <input type="number" id="extraPayment" value="50" min="0" step="10">
+                <div class="input-group">
+                  <label for="interestRate-0">Annual Interest Rate (%)</label>
+                  <input
+                    type="number"
+                    id="interestRate-0"
+                    value="18"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                  />
                 </div>
-
-                <div class="mt-8 flex justify-end gap-4">
-                    <button id="resetBtn" class="btn btn-secondary">Reset</button>
-                    <button id="calculateBtn" class="btn btn-primary">Calculate & Visualize</button>
+                <div class="input-group">
+                  <label for="minPayment-0">Minimum Monthly Payment ($)</label>
+                  <input
+                    type="number"
+                    id="minPayment-0"
+                    value="100"
+                    min="0"
+                    step="10"
+                  />
                 </div>
+              </div>
+              <button
+                class="remove-debt-btn text-red-500 hover:text-red-700 text-sm mt-3"
+                style="display: none"
+              >
+                Remove Debt
+              </button>
             </div>
+          </div>
 
-            <!-- Results and Chart Card -->
-            <div class="lg:col-span-2 card">
-                <h3 class="text-2xl font-semibold mb-6 text-dark">Debt Repayment Projection</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="bg-light p-4 rounded-lg shadow-sm text-center">
-                        <p class="text-sm text-gray-500">Snowball Total Payoff Time</p>
-                        <p id="snowballTime" class="text-2xl font-bold text-dark mt-1">N/A</p>
-                    </div>
-                    <div class="bg-light p-4 rounded-lg shadow-sm text-center">
-                        <p class="text-sm text-gray-500">Snowball Interest Saved</p>
-                        <p id="snowballInterestSaved" class="text-2xl font-bold text-dark mt-1">$0</p>
-                    </div>
-                    <div class="bg-light p-4 rounded-lg shadow-sm text-center">
-                        <p class="text-sm text-gray-500">Avalanche Total Payoff Time</p>
-                        <p id="avalancheTime" class="text-2xl font-bold text-dark mt-1">N/A</p>
-                    </div>
-                    <div class="bg-light p-4 rounded-lg shadow-sm text-center">
-                        <p class="text-sm text-gray-500">Avalanche Interest Saved</p>
-                        <p id="avalancheInterestSaved" class="text-2xl font-bold text-dark mt-1">$0</p>
-                    </div>
-                </div>
+          <button id="addDebtBtn" class="btn btn-secondary w-full mb-6">
+            <span class="mr-2">+</span> Add Another Debt
+          </button>
 
-                <div class="relative h-80 md:h-96">
-                    <canvas id="debtChart"></canvas>
-                </div>
-            </div>
+          <div class="input-group mb-6">
+            <label for="extraPayment">Extra Monthly Payment ($)</label>
+            <input
+              type="number"
+              id="extraPayment"
+              value="50"
+              min="0"
+              step="10"
+            />
+          </div>
+
+          <div class="mt-8 flex justify-end gap-4">
+            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+            <button id="calculateBtn" class="btn btn-primary">
+              Calculate & Visualize
+            </button>
+          </div>
         </div>
 
-        <!-- AdSense Placeholder - Mid-content -->
-        <div id="ad-banner-mid" class="w-full bg-light py-4 text-center text-xs text-gray-500 rounded-lg shadow-sm my-8">
-            <!-- Ad Placeholder: Good for a responsive display ad -->
-            <p>Your Ad Here - Contextual Ads</p>
+        <!-- Results and Chart Card -->
+        <div class="lg:col-span-2 card">
+          <h3 class="text-2xl font-semibold mb-6 text-dark">
+            Debt Repayment Projection
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-light p-4 rounded-lg shadow-sm text-center">
+              <p class="text-sm text-gray-500">Snowball Total Payoff Time</p>
+              <p id="snowballTime" class="text-2xl font-bold text-dark mt-1">
+                N/A
+              </p>
+            </div>
+            <div class="bg-light p-4 rounded-lg shadow-sm text-center">
+              <p class="text-sm text-gray-500">Snowball Interest Saved</p>
+              <p
+                id="snowballInterestSaved"
+                class="text-2xl font-bold text-dark mt-1"
+              >
+                $0
+              </p>
+            </div>
+            <div class="bg-light p-4 rounded-lg shadow-sm text-center">
+              <p class="text-sm text-gray-500">Avalanche Total Payoff Time</p>
+              <p id="avalancheTime" class="text-2xl font-bold text-dark mt-1">
+                N/A
+              </p>
+            </div>
+            <div class="bg-light p-4 rounded-lg shadow-sm text-center">
+              <p class="text-sm text-gray-500">Avalanche Interest Saved</p>
+              <p
+                id="avalancheInterestSaved"
+                class="text-2xl font-bold text-dark mt-1"
+              >
+                $0
+              </p>
+            </div>
+          </div>
+
+          <div class="relative h-80 md:h-96">
+            <canvas id="debtChart"></canvas>
+          </div>
         </div>
+      </div>
 
-        <section class="card mt-8">
-            <h3 class="text-2xl font-semibold mb-4 text-dark">Why Choose DebtFreeCalc?</h3>
-            <p class="text-gray-600 mb-4">
-                Paying off debt can feel overwhelming, but with the right strategy and tools, it's achievable. DebtFreeCalc simplifies complex financial calculations, clearly visualizing your path to becoming debt-free.
-            </p>
-            <h4 class="text-xl font-semibold mb-2 text-dark">Simple Calculations, Powerful Insights:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4">
-                <li><strong class="text-primary">Clear Strategy Comparison:</strong> Instantly see which method—Snowball or Avalanche—is best for your unique debt situation.</li>
-                <li><strong class="text-primary">Save on Interest:</strong> Understand how each strategy impacts your total interest paid, potentially saving you thousands.</li>
-                <li><strong class="text-primary">Visualize Progress:</strong> Stay motivated by seeing your monthly debt balances decrease over time with interactive charts.</li>
-                <li><strong class="text-primary">Session Persistence:</strong> Your data is saved securely, so you can pick up exactly where you left off.</li>
-            </ul>
-            <p class="text-gray-600">
-                Take the first step towards financial freedom with DebtFreeCalc today. A debt-free life is closer than you think!
-            </p>
-        </section>
+      <!-- AdSense Placeholder - Mid-content -->
+      <div
+        id="ad-banner-mid"
+        class="w-full bg-light py-4 text-center text-xs text-gray-500 rounded-lg shadow-sm my-8"
+      >
+        <!-- Ad Placeholder: Good for a responsive display ad -->
+        <p>Your Ad Here - Contextual Ads</p>
+      </div>
 
-        <!-- New Section: Effective Budgeting Tips for Debt Repayment -->
-        <section class="card mt-8">
-            <h3 class="text-2xl font-semibold mb-4 text-gradient">Effective Budgeting Tips for Debt Repayment</h3>
-            <p class="text-gray-600 mb-4">
-                Successfully paying off debt requires controlling your spending and finding extra money for accelerated payments. Use the following tips to create a budget that works for you:
-            </p>
-            <ul class="list-disc list-inside text-gray-600 mb-4">
-                <li><strong class="text-primary">Track Your Income and Expenses:</strong> Accurately record all money coming in and going out each month. It's crucial to track unexpected expenses to understand your spending patterns.</li>
-                <li><strong class="text-primary">Differentiate Needs vs. Wants:</strong> Identify essential expenses like housing, food, and transportation, and then look for areas to cut back on non-essential spending such as dining out or hobbies.</li>
-                <li><strong class="text-primary">Set Realistic Goals:</strong> Instead of over-committing to drastic cuts, create a realistic budget that you can stick to consistently. Celebrate small wins to stay motivated.</li>
-                <li><strong class="text-primary">Allocate Extra Payments:</strong> Direct any money saved towards extra debt payments. Use DebtFreeCalc to simulate how this extra amount can shorten your debt repayment period!</li>
-            </ul>
-            <p class="text-gray-600">
-                Budgeting is more than just tracking numbers; it's about understanding where your money goes and taking control. Start budgeting today to move one step closer to financial freedom!
-            </p>
-        </section>
+      <section class="card mt-8">
+        <h3 class="text-2xl font-semibold mb-4 text-dark">
+          Why Choose DebtFreeCalculate?
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Paying off debt can feel overwhelming, but with the right strategy and
+          tools, it's achievable. DebtFreeCalculate simplifies complex financial
+          calculations, clearly visualizing your path to becoming debt-free.
+        </p>
+        <h4 class="text-xl font-semibold mb-2 text-dark">
+          Simple Calculations, Powerful Insights:
+        </h4>
+        <ul class="list-disc list-inside text-gray-600 mb-4">
+          <li>
+            <strong class="text-primary">Clear Strategy Comparison:</strong>
+            Instantly see which method—Snowball or Avalanche—is best for your
+            unique debt situation.
+          </li>
+          <li>
+            <strong class="text-primary">Save on Interest:</strong> Understand
+            how each strategy impacts your total interest paid, potentially
+            saving you thousands.
+          </li>
+          <li>
+            <strong class="text-primary">Visualize Progress:</strong> Stay
+            motivated by seeing your monthly debt balances decrease over time
+            with interactive charts.
+          </li>
+          <li>
+            <strong class="text-primary">Session Persistence:</strong> Your data
+            is saved securely, so you can pick up exactly where you left off.
+          </li>
+        </ul>
+        <p class="text-gray-600">
+          Take the first step towards financial freedom with DebtFreeCalculate
+          today. A debt-free life is closer than you think!
+        </p>
+      </section>
+
+      <!-- New Section: Effective Budgeting Tips for Debt Repayment -->
+      <section class="card mt-8">
+        <h3 class="text-2xl font-semibold mb-4 text-gradient">
+          Effective Budgeting Tips for Debt Repayment
+        </h3>
+        <p class="text-gray-600 mb-4">
+          Successfully paying off debt requires controlling your spending and
+          finding extra money for accelerated payments. Use the following tips
+          to create a budget that works for you:
+        </p>
+        <ul class="list-disc list-inside text-gray-600 mb-4">
+          <li>
+            <strong class="text-primary"
+              >Track Your Income and Expenses:</strong
+            >
+            Accurately record all money coming in and going out each month. It's
+            crucial to track unexpected expenses to understand your spending
+            patterns.
+          </li>
+          <li>
+            <strong class="text-primary">Differentiate Needs vs. Wants:</strong>
+            Identify essential expenses like housing, food, and transportation,
+            and then look for areas to cut back on non-essential spending such
+            as dining out or hobbies.
+          </li>
+          <li>
+            <strong class="text-primary">Set Realistic Goals:</strong> Instead
+            of over-committing to drastic cuts, create a realistic budget that
+            you can stick to consistently. Celebrate small wins to stay
+            motivated.
+          </li>
+          <li>
+            <strong class="text-primary">Allocate Extra Payments:</strong>
+            Direct any money saved towards extra debt payments. Use
+            DebtFreeCalculate to simulate how this extra amount can shorten your
+            debt repayment period!
+          </li>
+        </ul>
+        <p class="text-gray-600">
+          Budgeting is more than just tracking numbers; it's about understanding
+          where your money goes and taking control. Start budgeting today to
+          move one step closer to financial freedom!
+        </p>
+      </section>
     </main>
 
     <!-- Bottom Ad Banner Placeholder -->
-    <div id="ad-banner-bottom" class="w-full bg-light py-2 text-center text-xs text-gray-500 border-t border-gray-200 mt-8">
-        <!-- Ad Placeholder: Ideal for a bottom sticky ad or another banner -->
-        <p>Your Ad Here</p>
+    <div
+      id="ad-banner-bottom"
+      class="w-full bg-light py-2 text-center text-xs text-gray-500 border-t border-gray-200 mt-8"
+    >
+      <!-- Ad Placeholder: Ideal for a bottom sticky ad or another banner -->
+      <p>Your Ad Here</p>
     </div>
 
     <footer class="bg-dark text-white py-6 mt-auto">
-        <div class="container text-center text-sm">
-            <p>&copy; <span id="current-year"></span> DebtFreeCalc. All rights reserved.</p>
-            <p class="mt-2">
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
-                <span class="mx-2">|</span>
-                <a href="#" class="text-gray-400 hover:text-primary transition-colors">Terms of Service</a>
-            </p>
-            <p class="mt-2 text-gray-500 text-xs">
-                Disclaimer: This simulator is for educational and informational purposes only. It does not constitute financial advice. Consult a qualified financial professional before making investment decisions.
-            </p>
-        </div>
+      <div class="container text-center text-sm">
+        <p>
+          &copy; <span id="current-year"></span> DebtFreeCalculate. All rights
+          reserved.
+        </p>
+        <p class="mt-2">
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors"
+            >Privacy Policy</a
+          >
+          <span class="mx-2">|</span>
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors"
+            >Terms of Service</a
+          >
+        </p>
+        <p class="mt-2 text-gray-500 text-xs">
+          Disclaimer: This simulator is for educational and informational
+          purposes only. It does not constitute financial advice. Consult a
+          qualified financial professional before making investment decisions.
+        </p>
+      </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const debtInputsContainer = document.getElementById('debt-inputs-container');
-            const addDebtBtn = document.getElementById('addDebtBtn');
-            const extraPaymentEl = document.getElementById('extraPayment');
-            const calculateBtn = document.getElementById('calculateBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const snowballTimeEl = document.getElementById('snowballTime');
-            const snowballInterestSavedEl = document.getElementById('snowballInterestSaved');
-            const avalancheTimeEl = document.getElementById('avalancheTime');
-            const avalancheInterestSavedEl = document.getElementById('avalancheInterestSaved');
-            const chartCanvas = document.getElementById('debtChart');
-            let debtChart; // To hold the Chart.js instance
+      document.addEventListener("DOMContentLoaded", function () {
+        const debtInputsContainer = document.getElementById(
+          "debt-inputs-container"
+        );
+        const addDebtBtn = document.getElementById("addDebtBtn");
+        const extraPaymentEl = document.getElementById("extraPayment");
+        const calculateBtn = document.getElementById("calculateBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const snowballTimeEl = document.getElementById("snowballTime");
+        const snowballInterestSavedEl = document.getElementById(
+          "snowballInterestSaved"
+        );
+        const avalancheTimeEl = document.getElementById("avalancheTime");
+        const avalancheInterestSavedEl = document.getElementById(
+          "avalancheInterestSaved"
+        );
+        const chartCanvas = document.getElementById("debtChart");
+        let debtChart; // To hold the Chart.js instance
 
-            // Set current year in footer
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+        // Set current year in footer
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
 
-            // --- Local Storage Management ---
-            const LOCAL_STORAGE_KEY = 'debtFreeCalcData'; // Updated key for new app name
+        // --- Local Storage Management ---
+        const LOCAL_STORAGE_KEY = "debtFreeCalculateData"; // Updated key for new app name
 
-            function saveInputs() {
-                const debts = [];
-                document.querySelectorAll('.debt-input-group').forEach((group, index) => {
-                    const debtNameInput = group.querySelector(`#debtName-${index}`);
-                    const balanceInput = group.querySelector(`#balance-${index}`);
-                    const interestRateInput = group.querySelector(`#interestRate-${index}`);
-                    const minPaymentInput = group.querySelector(`#minPayment-${index}`);
+        function saveInputs() {
+          const debts = [];
+          document
+            .querySelectorAll(".debt-input-group")
+            .forEach((group, index) => {
+              const debtNameInput = group.querySelector(`#debtName-${index}`);
+              const balanceInput = group.querySelector(`#balance-${index}`);
+              const interestRateInput = group.querySelector(
+                `#interestRate-${index}`
+              );
+              const minPaymentInput = group.querySelector(
+                `#minPayment-${index}`
+              );
 
-                    if (debtNameInput && balanceInput && interestRateInput && minPaymentInput) {
-                        debts.push({
-                            name: debtNameInput.value,
-                            balance: balanceInput.value,
-                            interestRate: interestRateInput.value,
-                            minPayment: minPaymentInput.value
-                        });
-                    }
+              if (
+                debtNameInput &&
+                balanceInput &&
+                interestRateInput &&
+                minPaymentInput
+              ) {
+                debts.push({
+                  name: debtNameInput.value,
+                  balance: balanceInput.value,
+                  interestRate: interestRateInput.value,
+                  minPayment: minPaymentInput.value,
                 });
-                const data = {
-                    debts: debts,
-                    extraPayment: extraPaymentEl.value
-                };
-                try {
-                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-                } catch (e) {
-                    console.error("Failed to save to local storage:", e);
-                }
-            }
+              }
+            });
+          const data = {
+            debts: debts,
+            extraPayment: extraPaymentEl.value,
+          };
+          try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+          } catch (e) {
+            console.error("Failed to save to local storage:", e);
+          }
+        }
 
-            function loadInputs() {
-                try {
-                    const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-                    if (savedData) {
-                        const data = JSON.parse(savedData);
-                        debtInputsContainer.innerHTML = ''; // Clear existing default debt
-                        
-                        data.debts.forEach(debt => {
-                            addDebtInput(debt.name, debt.balance, debt.interestRate, debt.minPayment);
-                        });
-                        extraPaymentEl.value = data.extraPayment || '';
-                        document.querySelectorAll('.debt-input-group input').forEach(input => {
-                            input.addEventListener('input', () => {
-                                saveInputs();
-                                calculateDebt();
-                            });
-                        });
-                        return true;
-                    }
-                } catch (e) {
-                    console.error("Failed to load from local storage:", e);
-                    localStorage.removeItem(LOCAL_STORAGE_KEY);
-                }
-                return false;
-            }
+        function loadInputs() {
+          try {
+            const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (savedData) {
+              const data = JSON.parse(savedData);
+              debtInputsContainer.innerHTML = ""; // Clear existing default debt
 
-            function addDebtInput(name = '', balance = '', interestRate = '', minPayment = '') {
-                const currentDebtIndex = debtInputsContainer.children.length; 
-                
-                const newDebtGroup = document.createElement('div');
-                newDebtGroup.className = 'debt-input-group border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50';
-                newDebtGroup.innerHTML = `
-                    <h4 class="font-semibold text-gray-700 mb-3">Debt #${currentDebtIndex + 1}</h4>
+              data.debts.forEach((debt) => {
+                addDebtInput(
+                  debt.name,
+                  debt.balance,
+                  debt.interestRate,
+                  debt.minPayment
+                );
+              });
+              extraPaymentEl.value = data.extraPayment || "";
+              document
+                .querySelectorAll(".debt-input-group input")
+                .forEach((input) => {
+                  input.addEventListener("input", () => {
+                    saveInputs();
+                    calculateDebt();
+                  });
+                });
+              return true;
+            }
+          } catch (e) {
+            console.error("Failed to load from local storage:", e);
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+          }
+          return false;
+        }
+
+        function addDebtInput(
+          name = "",
+          balance = "",
+          interestRate = "",
+          minPayment = ""
+        ) {
+          const currentDebtIndex = debtInputsContainer.children.length;
+
+          const newDebtGroup = document.createElement("div");
+          newDebtGroup.className =
+            "debt-input-group border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50";
+          newDebtGroup.innerHTML = `
+                    <h4 class="font-semibold text-gray-700 mb-3">Debt #${
+                      currentDebtIndex + 1
+                    }</h4>
                     <div class="input-group mb-3">
                         <label for="debtName-${currentDebtIndex}">Debt Name</label>
                         <input type="text" id="debtName-${currentDebtIndex}" placeholder="e.g., Credit Card, Student Loan" value="${name}">
@@ -370,300 +556,379 @@
                     </div>
                     <button class="remove-debt-btn text-red-500 hover:text-red-700 text-sm mt-3">Remove Debt</button>
                 `;
-                debtInputsContainer.appendChild(newDebtGroup);
+          debtInputsContainer.appendChild(newDebtGroup);
 
-                updateRemoveButtonsVisibility();
+          updateRemoveButtonsVisibility();
 
-                newDebtGroup.querySelectorAll('input').forEach(input => {
-                    input.addEventListener('input', () => {
-                        saveInputs();
-                        calculateDebt();
-                    });
-                });
+          newDebtGroup.querySelectorAll("input").forEach((input) => {
+            input.addEventListener("input", () => {
+              saveInputs();
+              calculateDebt();
+            });
+          });
 
-                newDebtGroup.querySelector('.remove-debt-btn').addEventListener('click', function() {
-                    newDebtGroup.remove();
-                    updateDebtNumbers();
-                    updateRemoveButtonsVisibility();
-                    calculateDebt();
-                    saveInputs();
-                });
-            }
+          newDebtGroup
+            .querySelector(".remove-debt-btn")
+            .addEventListener("click", function () {
+              newDebtGroup.remove();
+              updateDebtNumbers();
+              updateRemoveButtonsVisibility();
+              calculateDebt();
+              saveInputs();
+            });
+        }
 
-            function updateDebtNumbers() {
-                document.querySelectorAll('.debt-input-group').forEach((group, index) => {
-                    group.querySelector('h4').textContent = `Debt #${index + 1}`;
-                    
-                    const inputElements = [
-                        { labelSelector: `label[for^="debtName-"]`, inputSelector: `input[id^="debtName-"]`, baseId: 'debtName' },
-                        { labelSelector: `label[for^="balance-"]`, inputSelector: `input[id^="balance-"]`, baseId: 'balance' },
-                        { labelSelector: `label[for^="interestRate-"]`, inputSelector: `input[id^="interestRate-"]`, baseId: 'interestRate' },
-                        { labelSelector: `label[for^="minPayment-"]`, inputSelector: `input[id^="minPayment-"]`, baseId: 'minPayment' }
-                    ];
+        function updateDebtNumbers() {
+          document
+            .querySelectorAll(".debt-input-group")
+            .forEach((group, index) => {
+              group.querySelector("h4").textContent = `Debt #${index + 1}`;
 
-                    inputElements.forEach(item => {
-                        const labelEl = group.querySelector(item.labelSelector);
-                        const inputEl = group.querySelector(item.inputSelector);
-                        if (labelEl) labelEl.htmlFor = `${item.baseId}-${index}`;
-                        if (inputEl) inputEl.id = `${item.baseId}-${index}`;
-                    });
-                });
-            }
+              const inputElements = [
+                {
+                  labelSelector: `label[for^="debtName-"]`,
+                  inputSelector: `input[id^="debtName-"]`,
+                  baseId: "debtName",
+                },
+                {
+                  labelSelector: `label[for^="balance-"]`,
+                  inputSelector: `input[id^="balance-"]`,
+                  baseId: "balance",
+                },
+                {
+                  labelSelector: `label[for^="interestRate-"]`,
+                  inputSelector: `input[id^="interestRate-"]`,
+                  baseId: "interestRate",
+                },
+                {
+                  labelSelector: `label[for^="minPayment-"]`,
+                  inputSelector: `input[id^="minPayment-"]`,
+                  baseId: "minPayment",
+                },
+              ];
 
-            function updateRemoveButtonsVisibility() {
-                const removeButtons = document.querySelectorAll('.remove-debt-btn');
-                if (removeButtons.length > 1) {
-                    removeButtons.forEach(btn => btn.style.display = 'block');
-                } else {
-                    removeButtons.forEach(btn => btn.style.display = 'none');
+              inputElements.forEach((item) => {
+                const labelEl = group.querySelector(item.labelSelector);
+                const inputEl = group.querySelector(item.inputSelector);
+                if (labelEl) labelEl.htmlFor = `${item.baseId}-${index}`;
+                if (inputEl) inputEl.id = `${item.baseId}-${index}`;
+              });
+            });
+        }
+
+        function updateRemoveButtonsVisibility() {
+          const removeButtons = document.querySelectorAll(".remove-debt-btn");
+          if (removeButtons.length > 1) {
+            removeButtons.forEach((btn) => (btn.style.display = "block"));
+          } else {
+            removeButtons.forEach((btn) => (btn.style.display = "none"));
+          }
+        }
+
+        function getDebtsFromInputs() {
+          const debts = [];
+          document
+            .querySelectorAll(".debt-input-group")
+            .forEach((group, index) => {
+              const debtNameEl = group.querySelector(`#debtName-${index}`);
+              const balanceEl = group.querySelector(`#balance-${index}`);
+              const interestRateEl = group.querySelector(
+                `#interestRate-${index}`
+              );
+              const minPaymentEl = group.querySelector(`#minPayment-${index}`);
+
+              if (debtNameEl && balanceEl && interestRateEl && minPaymentEl) {
+                const balance = parseFloat(balanceEl.value) || 0;
+                const interestRate =
+                  parseFloat(interestRateEl.value) / 100 || 0;
+                const minPayment = parseFloat(minPaymentEl.value) || 0;
+
+                if (balance > 0) {
+                  debts.push({
+                    id: `debt-${index}`,
+                    name: debtNameEl.value || `Debt #${index + 1}`,
+                    balance: balance,
+                    interestRate: interestRate,
+                    minPayment: minPayment,
+                  });
                 }
-            }
+              } else {
+                console.warn(
+                  `Skipping debt group #${
+                    index + 1
+                  } due to missing input elements. Group:`,
+                  group
+                );
+              }
+            });
+          return debts;
+        }
 
-            function getDebtsFromInputs() {
-                const debts = [];
-                document.querySelectorAll('.debt-input-group').forEach((group, index) => {
-                    const debtNameEl = group.querySelector(`#debtName-${index}`);
-                    const balanceEl = group.querySelector(`#balance-${index}`);
-                    const interestRateEl = group.querySelector(`#interestRate-${index}`);
-                    const minPaymentEl = group.querySelector(`#minPayment-${index}`);
+        function calculateDebt() {
+          const debts = getDebtsFromInputs();
+          const extraPayment = parseFloat(extraPaymentEl.value) || 0;
 
-                    if (debtNameEl && balanceEl && interestRateEl && minPaymentEl) {
-                        const balance = parseFloat(balanceEl.value) || 0;
-                        const interestRate = parseFloat(interestRateEl.value) / 100 || 0;
-                        const minPayment = parseFloat(minPaymentEl.value) || 0;
+          if (debts.length === 0) {
+            snowballTimeEl.textContent = "N/A";
+            snowballInterestSavedEl.textContent = "$0";
+            avalancheTimeEl.textContent = "N/A";
+            avalancheInterestSavedEl.textContent = "$0";
+            updateChart([], [], []);
+            return;
+          }
 
-                        if (balance > 0) {
-                            debts.push({
-                                id: `debt-${index}`,
-                                name: debtNameEl.value || `Debt #${index + 1}`,
-                                balance: balance,
-                                interestRate: interestRate,
-                                minPayment: minPayment
-                            });
-                        }
-                    } else {
-                        console.warn(`Skipping debt group #${index + 1} due to missing input elements. Group:`, group);
-                    }
-                });
-                return debts;
-            }
+          const debtsForSnowball = JSON.parse(JSON.stringify(debts)).sort(
+            (a, b) => a.balance - b.balance
+          );
+          const debtsForAvalanche = JSON.parse(JSON.stringify(debts)).sort(
+            (a, b) => b.interestRate - a.interestRate
+          );
 
-            function calculateDebt() {
-                const debts = getDebtsFromInputs();
-                const extraPayment = parseFloat(extraPaymentEl.value) || 0;
+          const snowballResult = simulatePayment(
+            debtsForSnowball,
+            extraPayment,
+            "snowball"
+          );
+          const avalancheResult = simulatePayment(
+            debtsForAvalanche,
+            extraPayment,
+            "avalanche"
+          );
 
-                if (debts.length === 0) {
-                    snowballTimeEl.textContent = 'N/A';
-                    snowballInterestSavedEl.textContent = '$0';
-                    avalancheTimeEl.textContent = 'N/A';
-                    avalancheInterestSavedEl.textContent = '$0';
-                    updateChart([], [], []);
-                    return;
+          snowballTimeEl.textContent = `${snowballResult.months} months`;
+          snowballInterestSavedEl.textContent = `$${snowballResult.totalInterest.toLocaleString(
+            undefined,
+            { minimumFractionDigits: 0, maximumFractionDigits: 0 }
+          )}`;
+          avalancheTimeEl.textContent = `${avalancheResult.months} months`;
+          avalancheInterestSavedEl.textContent = `$${avalancheResult.totalInterest.toLocaleString(
+            undefined,
+            { minimumFractionDigits: 0, maximumFractionDigits: 0 }
+          )}`;
+
+          updateChart(
+            snowballResult.monthlyTotals,
+            avalancheResult.monthlyTotals
+          );
+          saveInputs();
+        }
+
+        function simulatePayment(debtsCopy, extraPayment, strategyType) {
+          let months = 0;
+          let totalInterestPaid = 0;
+          let activeDebts = debtsCopy;
+
+          const monthlyBalances = [];
+          const MAX_MONTHS = 1200;
+
+          while (
+            activeDebts.some((d) => d.balance > 0) &&
+            months < MAX_MONTHS
+          ) {
+            months++;
+            let currentExtraPayment = extraPayment;
+
+            activeDebts.forEach((debt) => {
+              if (debt.balance > 0) {
+                const monthlyInterestRate = debt.interestRate / 12;
+                const interestThisMonth = debt.balance * monthlyInterestRate;
+                totalInterestPaid += interestThisMonth;
+
+                let paymentAmount = debt.minPayment;
+                if (debt.balance + interestThisMonth < paymentAmount) {
+                  paymentAmount = debt.balance + interestThisMonth;
                 }
 
-                const debtsForSnowball = JSON.parse(JSON.stringify(debts)).sort((a, b) => a.balance - b.balance);
-                const debtsForAvalanche = JSON.parse(JSON.stringify(debts)).sort((a, b) => b.interestRate - a.interestRate);
+                debt.balance -= paymentAmount;
+              }
+            });
 
-                const snowballResult = simulatePayment(debtsForSnowball, extraPayment, 'snowball');
-                const avalancheResult = simulatePayment(debtsForAvalanche, extraPayment, 'avalanche');
-
-                snowballTimeEl.textContent = `${snowballResult.months} months`;
-                snowballInterestSavedEl.textContent = `$${snowballResult.totalInterest.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-                avalancheTimeEl.textContent = `${avalancheResult.months} months`;
-                avalancheInterestSavedEl.textContent = `$${avalancheResult.totalInterest.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-                updateChart(snowballResult.monthlyTotals, avalancheResult.monthlyTotals);
-                saveInputs();
+            const targetDebt = activeDebts.find((d) => d.balance > 0);
+            if (targetDebt && currentExtraPayment > 0) {
+              let payment = Math.min(currentExtraPayment, targetDebt.balance);
+              targetDebt.balance -= payment;
             }
 
-            function simulatePayment(debtsCopy, extraPayment, strategyType) {
-                let months = 0;
-                let totalInterestPaid = 0;
-                let activeDebts = debtsCopy;
+            activeDebts = activeDebts.filter((d) => d.balance > 0);
 
-                const monthlyBalances = [];
-                const MAX_MONTHS = 1200;
-
-                while (activeDebts.some(d => d.balance > 0) && months < MAX_MONTHS) {
-                    months++;
-                    let currentExtraPayment = extraPayment;
-
-                    activeDebts.forEach(debt => {
-                        if (debt.balance > 0) {
-                            const monthlyInterestRate = debt.interestRate / 12;
-                            const interestThisMonth = debt.balance * monthlyInterestRate;
-                            totalInterestPaid += interestThisMonth;
-
-                            let paymentAmount = debt.minPayment;
-                            if (debt.balance + interestThisMonth < paymentAmount) {
-                                paymentAmount = debt.balance + interestThisMonth;
-                            }
-                            
-                            debt.balance -= paymentAmount;
-                        }
-                    });
-
-                    const targetDebt = activeDebts.find(d => d.balance > 0);
-                    if (targetDebt && currentExtraPayment > 0) {
-                        let payment = Math.min(currentExtraPayment, targetDebt.balance);
-                        targetDebt.balance -= payment;
-                    }
-
-                    activeDebts = activeDebts.filter(d => d.balance > 0);
-
-                    if (strategyType === 'snowball') {
-                        activeDebts.sort((a, b) => a.balance - b.balance);
-                    } else if (strategyType === 'avalanche') {
-                        activeDebts.sort((a, b) => b.interestRate - a.interestRate);
-                    }
-
-                    const totalRemainingBalance = activeDebts.reduce((sum, d) => sum + d.balance, 0);
-                    monthlyBalances.push(totalRemainingBalance);
-                }
-
-                return { months, totalInterest: totalInterestPaid, monthlyTotals: monthlyBalances };
+            if (strategyType === "snowball") {
+              activeDebts.sort((a, b) => a.balance - b.balance);
+            } else if (strategyType === "avalanche") {
+              activeDebts.sort((a, b) => b.interestRate - a.interestRate);
             }
 
+            const totalRemainingBalance = activeDebts.reduce(
+              (sum, d) => sum + d.balance,
+              0
+            );
+            monthlyBalances.push(totalRemainingBalance);
+          }
 
-            // --- Charting Logic ---
-            function updateChart(snowballMonthlyTotals, avalancheMonthlyTotals) {
-                const ctx = chartCanvas.getContext('2d');
+          return {
+            months,
+            totalInterest: totalInterestPaid,
+            monthlyTotals: monthlyBalances,
+          };
+        }
 
-                if (debtChart) {
-                    debtChart.destroy();
-                }
+        // --- Charting Logic ---
+        function updateChart(snowballMonthlyTotals, avalancheMonthlyTotals) {
+          const ctx = chartCanvas.getContext("2d");
 
-                const maxLength = Math.max(snowballMonthlyTotals.length, avalancheMonthlyTotals.length);
-                const labels = Array.from({ length: maxLength }, (_, i) => `${i + 1} months`);
+          if (debtChart) {
+            debtChart.destroy();
+          }
 
-                debtChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Debt Snowball',
-                                data: snowballMonthlyTotals,
-                                borderColor: 'rgb(16, 185, 129)',
-                                backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                                fill: false,
-                                tension: 0.3,
-                                borderWidth: 2,
-                                pointRadius: 1,
-                                pointBackgroundColor: 'rgb(16, 185, 129)'
-                            },
-                            {
-                                label: 'Debt Avalanche',
-                                data: avalancheMonthlyTotals,
-                                borderColor: 'rgb(52, 211, 153)',
-                                backgroundColor: 'rgba(52, 211, 153, 0.1)',
-                                fill: false,
-                                tension: 0.3,
-                                borderWidth: 2,
-                                pointRadius: 1,
-                                pointBackgroundColor: 'rgb(52, 211, 153)'
-                            }
-                        ]
+          const maxLength = Math.max(
+            snowballMonthlyTotals.length,
+            avalancheMonthlyTotals.length
+          );
+          const labels = Array.from(
+            { length: maxLength },
+            (_, i) => `${i + 1} months`
+          );
+
+          debtChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Debt Snowball",
+                  data: snowballMonthlyTotals,
+                  borderColor: "rgb(16, 185, 129)",
+                  backgroundColor: "rgba(16, 185, 129, 0.2)",
+                  fill: false,
+                  tension: 0.3,
+                  borderWidth: 2,
+                  pointRadius: 1,
+                  pointBackgroundColor: "rgb(16, 185, 129)",
+                },
+                {
+                  label: "Debt Avalanche",
+                  data: avalancheMonthlyTotals,
+                  borderColor: "rgb(52, 211, 153)",
+                  backgroundColor: "rgba(52, 211, 153, 0.1)",
+                  fill: false,
+                  tension: 0.3,
+                  borderWidth: 2,
+                  pointRadius: 1,
+                  pointBackgroundColor: "rgb(52, 211, 153)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "top",
+                  labels: {
+                    font: {
+                      size: 14,
+                      family: "Inter",
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    font: {
-                                        size: 14,
-                                        family: 'Inter'
-                                    },
-                                    color: '#1F2937'
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += '$' + context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }); // Use dollar symbol
-                                        }
-                                        return label;
-                                    }
-                                },
-                                titleFont: { family: 'Inter' },
-                                bodyFont: { family: 'Inter' },
-                                footerFont: { family: 'Inter' },
-                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                titleColor: 'white',
-                                bodyColor: 'white',
-                                borderColor: 'rgba(16, 185, 129, 0.5)',
-                                borderWidth: 1,
-                                borderRadius: 8,
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Months Elapsed',
-                                    color: '#1F2937',
-                                    font: { size: 16, family: 'Inter', weight: 'bold' }
-                                },
-                                ticks: {
-                                    color: '#4B5563',
-                                    font: { family: 'Inter' }
-                                },
-                                grid: {
-                                    color: '#E5E7EB'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Balance ($)',
-                                    color: '#1F2937',
-                                    font: { size: 16, family: 'Inter', weight: 'bold' }
-                                },
-                                ticks: {
-                                    callback: function(value, index, values) {
-                                        return '$' + value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-                                    },
-                                    color: '#4B5563',
-                                    font: { family: 'Inter' }
-                                },
-                                grid: {
-                                    color: '#E5E7EB'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+                    color: "#1F2937",
+                  },
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      if (context.parsed.y !== null) {
+                        label +=
+                          "$" +
+                          context.parsed.y.toLocaleString(undefined, {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }); // Use dollar symbol
+                      }
+                      return label;
+                    },
+                  },
+                  titleFont: { family: "Inter" },
+                  bodyFont: { family: "Inter" },
+                  footerFont: { family: "Inter" },
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  titleColor: "white",
+                  bodyColor: "white",
+                  borderColor: "rgba(16, 185, 129, 0.5)",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Months Elapsed",
+                    color: "#1F2937",
+                    font: { size: 16, family: "Inter", weight: "bold" },
+                  },
+                  ticks: {
+                    color: "#4B5563",
+                    font: { family: "Inter" },
+                  },
+                  grid: {
+                    color: "#E5E7EB",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Balance ($)",
+                    color: "#1F2937",
+                    font: { size: 16, family: "Inter", weight: "bold" },
+                  },
+                  ticks: {
+                    callback: function (value, index, values) {
+                      return (
+                        "$" +
+                        value.toLocaleString(undefined, {
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        })
+                      );
+                    },
+                    color: "#4B5563",
+                    font: { family: "Inter" },
+                  },
+                  grid: {
+                    color: "#E5E7EB",
+                  },
+                },
+              },
+            },
+          });
+        }
 
-            // --- Event Listeners ---
-            addDebtBtn.addEventListener('click', () => addDebtInput('', '', '', ''));
-            calculateBtn.addEventListener('click', calculateDebt);
-            extraPaymentEl.addEventListener('input', () => {
-                saveInputs();
-                calculateDebt();
-            });
-
-            resetBtn.addEventListener('click', function() {
-                debtInputsContainer.innerHTML = '';
-                addDebtInput('Credit Card A', '5000', '18', '100');
-                extraPaymentEl.value = '50';
-                calculateDebt();
-                saveInputs();
-            });
-            
-            if (!loadInputs()) {
-                addDebtInput('Credit Card A', '5000', '18', '100');
-            }
-            calculateDebt();
+        // --- Event Listeners ---
+        addDebtBtn.addEventListener("click", () =>
+          addDebtInput("", "", "", "")
+        );
+        calculateBtn.addEventListener("click", calculateDebt);
+        extraPaymentEl.addEventListener("input", () => {
+          saveInputs();
+          calculateDebt();
         });
+
+        resetBtn.addEventListener("click", function () {
+          debtInputsContainer.innerHTML = "";
+          addDebtInput("Credit Card A", "5000", "18", "100");
+          extraPaymentEl.value = "50";
+          calculateDebt();
+          saveInputs();
+        });
+
+        if (!loadInputs()) {
+          addDebtInput("Credit Card A", "5000", "18", "100");
+        }
+        calculateDebt();
+      });
     </script>
-</body>
+  </body>
 </html>

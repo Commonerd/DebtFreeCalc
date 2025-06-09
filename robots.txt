@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://debtfreecalc.netlify.app/sitemap.xml
+Sitemap: https://debtfreecalculate.netlify.app/sitemap.xml
